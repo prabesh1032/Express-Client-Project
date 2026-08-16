@@ -1,0 +1,15 @@
+import { FiArrowUpRight, FiBox, FiDollarSign, FiShoppingBag, FiUsers } from "react-icons/fi";
+
+const stats = [
+  { label: "Total revenue", value: "रू 2,84,500", change: "+12.8%", icon: FiDollarSign },
+  { label: "Total orders", value: "1,248", change: "+8.2%", icon: FiShoppingBag },
+  { label: "Products", value: "186", change: "+4 new", icon: FiBox },
+  { label: "Customers", value: "3,842", change: "+18.4%", icon: FiUsers },
+];
+
+export default function AdminDashboard() {
+  return <div className="space-y-8"><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="mb-2 text-sm font-bold uppercase tracking-[0.2em] text-[#b91c4a]">Good morning</p><h2 className="text-3xl font-black tracking-tight">Here&apos;s your store at a glance.</h2></div><button className="w-fit rounded-xl bg-[#b91c4a] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#b91c4a]/20 hover:bg-[#8f153a]">Download report</button></div>
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(({ label, value, change, icon: Icon }) => <div key={label} className="rounded-2xl border border-[#eadfe2] bg-white p-5"><div className="mb-5 flex items-center justify-between"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f7e8ed] text-[#b91c4a]"><Icon size={19} /></span><span className="text-xs font-bold text-emerald-600">{change}</span></div><p className="text-sm text-[#756875]">{label}</p><p className="mt-1 text-2xl font-black tracking-tight">{value}</p></div>)}</div>
+    <div className="grid gap-5 xl:grid-cols-[1.4fr_0.8fr]"><section className="rounded-2xl border border-[#eadfe2] bg-white p-6"><div className="mb-6 flex items-center justify-between"><div><h3 className="font-black">Sales overview</h3><p className="mt-1 text-xs text-[#a799a0]">Revenue performance over the last 7 days</p></div><span className="rounded-lg bg-[#fbf7f2] px-3 py-2 text-xs font-bold text-[#756875]">This week</span></div><div className="flex h-56 items-end gap-3 sm:gap-6">{[38, 52, 46, 72, 60, 84, 69].map((height, index) => <div key={index} className="flex flex-1 flex-col items-center gap-3"><div className={`w-full max-w-12 rounded-t-lg ${index === 5 ? "bg-[#b91c4a]" : "bg-[#f1cbd5]"}`} style={{ height: `${height}%` }} /><span className="text-xs text-[#a799a0]">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index]}</span></div>)}</div></section><section className="rounded-2xl border border-[#eadfe2] bg-white p-6"><div className="mb-5 flex items-center justify-between"><h3 className="font-black">Recent orders</h3><FiArrowUpRight className="text-[#b91c4a]" /></div><div className="space-y-4">{[["#NS-1048", "Sita Thapa", "रू 4,200"], ["#NS-1047", "Aayush Karki", "रू 2,850"], ["#NS-1046", "Mina Gurung", "रू 1,560"], ["#NS-1045", "Rojina Rai", "रू 6,100"]].map(([id, name, amount]) => <div key={id} className="flex items-center justify-between border-b border-[#f3ece9] pb-3 last:border-0"><div><p className="text-sm font-bold">{name}</p><p className="text-xs text-[#a799a0]">{id}</p></div><span className="text-sm font-bold">{amount}</span></div>)}</div></section></div>
+  </div>;
+}

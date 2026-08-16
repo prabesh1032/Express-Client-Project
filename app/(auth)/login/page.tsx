@@ -1,0 +1,9 @@
+'use client'
+
+import Link from 'next/link'
+import LoginForm from '@/components/common/form/login.form'
+import BrandLogo from '@/components/common/brand-logo'
+
+const BrandPanel = () => <aside className='relative hidden overflow-hidden bg-[#7f153d] p-12 text-white lg:flex lg:flex-col lg:justify-between'><div className='absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#d9a441]/25' /><div className='absolute -bottom-28 -left-20 h-80 w-80 rounded-full border-[32px] border-[#f5d58a]/10' /><div className='relative'><BrandLogo className='mb-12' imageClassName='h-16 w-16' showName={false} /><p className='mb-4 text-sm font-bold uppercase tracking-[0.28em] text-[#f5d58a]'>Made with home in mind</p><h2 className='max-w-sm text-4xl font-black leading-tight'>Discover the best of Nepal, delivered to you.</h2></div><p className='relative max-w-xs text-sm leading-6 text-white/70'>Support local makers, explore honest products, and bring a little Nepal home.</p></aside>
+
+export default function LoginPage() { return <main className='min-h-screen bg-[#fffaf5] px-5 py-8 sm:px-8'><div className='mx-auto grid min-h-[calc(100vh-4rem)] max-w-5xl overflow-hidden rounded-3xl bg-white shadow-[0_24px_80px_rgba(83,27,47,0.14)] lg:grid-cols-[0.9fr_1.1fr]'><BrandPanel /><section className='flex items-center justify-center px-6 py-10 sm:px-14'><div className='w-full max-w-md'><div className='mb-8'><p className='mb-2 text-sm font-bold uppercase tracking-[0.25em] text-[#b91c4a]'>Welcome back</p><h1 className='text-3xl font-black tracking-tight text-[#251b2b] sm:text-4xl'>Sign in to Nepali Store</h1><p className='mt-3 text-sm leading-6 text-[#756875]'>Your favourite local finds are only a step away.</p></div><LoginForm /><p className='mt-7 text-center text-sm text-[#756875]'>New to Nepali Store?<Link href='/sign-up' className='ml-1 font-bold text-[#b91c4a] hover:text-[#8f153a]'>Create an account</Link></p></div></section></div></main> }
