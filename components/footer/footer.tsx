@@ -5,7 +5,11 @@ import BrandLogo from "@/components/common/brand-logo";
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname.startsWith("/admin")) return null;
+  if (
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/sign-up")
+  ) return null;
   return (
     <footer className="border-t border-[#eadfe2] bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1.5fr_1fr_1fr_1fr]">

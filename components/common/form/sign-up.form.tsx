@@ -8,8 +8,12 @@ import { signUpSchema } from '@/schemas/auth.schema'
 import { TRegister, TSignUpForm } from '@/types/auth.types'
 import { register as registerUser } from '@/api/auth.api'
 import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/common/toast/toast-provider'
 
 const SignUpForm = () => {
+    const router = useRouter()
+    const { toast } = useToast()
 
     const { register, handleSubmit, formState: { errors } } = useForm<TSignUpForm>({
         defaultValues: {
@@ -24,8 +28,15 @@ const SignUpForm = () => {
         mode: 'all'
     })
 
-    const { mutate, isPending, error, isSuccess } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: (data: TRegister) => registerUser(data),
+        onSuccess: () => {
+            toast('Account created successfully. You can now sign in.', 'success')
+            router.replace('/login')
+        },
+        onError: (error) => {
+            toast((error as { message?: string })?.message ?? 'Unable to create your account.', 'error')
+        },
     })
 
     const onSubmit = (data: TSignUpForm) => {
@@ -35,8 +46,8 @@ const SignUpForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-            <div className='grid gap-1 sm:grid-cols-2 sm:gap-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-1'>
+            <div className='grid gap-1 sm:grid-cols-2 sm:gap-3'>
             <Input
                 name='full_name'
                 required
@@ -71,7 +82,7 @@ const SignUpForm = () => {
 
 
             />
-            <div className='grid gap-1 sm:grid-cols-2 sm:gap-4'>
+            <div className='grid gap-1 sm:grid-cols-2 sm:gap-3'>
             <Input
                 required={true}
                 name='password'
@@ -99,21 +110,19 @@ const SignUpForm = () => {
             />
             </div>
 
-            <div className='mt-1 rounded-2xl border border-dashed border-[#e4cbd2] bg-[#fffafc] p-4'>
+            <div className='mt-0 rounded-2xl border border-dashed border-[#e4cbd2] bg-[#fffafc] p-3'>
                 <label htmlFor='profile_image' className='mb-1 block text-sm font-bold text-[#443442]'>Profile image <span className='font-normal text-[#9a8e98]'>(optional)</span></label>
                 <p className='mb-3 text-xs text-[#9a8e98]'>JPG, PNG or GIF · maximum 5MB</p>
                 <input id='profile_image' type='file' accept='image/png,image/jpeg,image/gif' {...register('profile_image')} className='block w-full cursor-pointer rounded-xl border border-[#eadfe2] bg-white text-sm text-[#756875] file:mr-4 file:border-0 file:bg-[#f7e8ed] file:px-4 file:py-2.5 file:font-bold file:text-[#b91c4a] hover:file:bg-[#f2dce4]' />
             </div>
 
             {/* button */}
-            <div className='mt-4'>
+            <div className='mt-2'>
                 <Button
                     label={isPending ? 'Creating...' : 'Create Account'}
                     type={'submit'}
                 />
             </div>
-            {error && <p className='text-sm text-red-600'>{(error as { message?: string })?.message ?? 'Unable to create account'}</p>}
-            {isSuccess && <p className='text-sm text-green-600'>Account created successfully. You can now log in.</p>}
         </form>
     )
 }

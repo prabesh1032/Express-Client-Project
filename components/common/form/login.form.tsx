@@ -9,9 +9,11 @@ import { login } from "@/api/auth.api";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { admins } from "@/types/enum.types";
+import { useToast } from "@/components/common/toast/toast-provider";
 
 const LoginForm = () => {
     const router = useRouter();
+    const { toast } = useToast();
     const {
         register,
         handleSubmit,
@@ -26,14 +28,20 @@ const LoginForm = () => {
     });
 
 
-    const { mutate, isPending, error } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: login,
         onSuccess: (response) => {
             localStorage.setItem("nepali-store-user", JSON.stringify(response.data));
-            router.replace(admins.includes(response.data.role) ? "/admin" : "/");
+            const isAdmin = admins.includes(response.data.role);
+            toast(
+                isAdmin ? "Admin login successful. Opening your dashboard..." : `Welcome back, ${response.data.full_name}!`,
+                "success",
+            );
+            window.setTimeout(() => router.replace(isAdmin ? "/admin" : "/"), 700);
         },
         onError: (error) => {
-            console.log('login mutation on error', error)
+            const apiError = error as { message?: string; error?: { message?: string } };
+            toast(apiError.message ?? apiError.error?.message ?? "Invalid email or password. Please try again.", "error");
         }
     })
 
@@ -82,7 +90,6 @@ const LoginForm = () => {
             <div className="mt-4">
                 <Button label={isPending ? "Logging in..." : "Login"} type={"submit"} />
             </div>
-            {error && <p className="text-sm text-red-600">{(error as { message?: string })?.message ?? "Unable to log in"}</p>}
         </form>
     );
 };

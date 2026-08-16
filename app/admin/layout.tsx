@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { FiBarChart2, FiBox, FiChevronDown, FiGrid, FiLogOut, FiMenu, FiSettings, FiUsers, FiX } from "react-icons/fi";
 import { admins, Role } from "@/types/enum.types";
 import { AuthUser } from "@/types/auth.types";
+import { useToast } from "@/components/common/toast/toast-provider";
 
 const navigation = [
   { label: "Overview", href: "/admin", icon: FiGrid },
@@ -19,6 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -34,6 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const logout = () => {
     localStorage.removeItem("nepali-store-user");
+    toast("You have been signed out.", "success");
     router.replace("/login");
   };
 
