@@ -7,6 +7,7 @@ import {
   FiBarChart2,
   FiBox,
   FiChevronDown,
+  FiFolder,
   FiGrid,
   FiLogOut,
   FiMenu,
@@ -23,6 +24,7 @@ const navigation = [
   { label: "Overview", href: "/admin", icon: FiGrid },
   { label: "Products", href: "/admin/products", icon: FiBox },
   { label: "Brands", href: "/admin/brands", icon: FiTag },
+  { label: "Categories", href: "/admin/categories", icon: FiFolder },
   { label: "Orders", href: "/admin/orders", icon: FiBarChart2 },
   { label: "Customers", href: "/admin/customers", icon: FiUsers },
 ];

@@ -23,13 +23,19 @@ const links = [
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  if (pathname.startsWith("/login") || pathname.startsWith("/sign-up") || pathname.startsWith("/admin"))
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/sign-up") ||
+    pathname.startsWith("/admin")
+  )
     return null;
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#eadfe2]/80 bg-[#fffaf5]/95 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <div onClick={() => setOpen(false)}><BrandLogo imageClassName="h-14 w-14" /></div>
+        <div onClick={() => setOpen(false)}>
+          <BrandLogo imageClassName="h-14 w-14" />
+        </div>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
             <Link
@@ -42,12 +48,6 @@ export default function Nav() {
           ))}
         </nav>
         <div className="flex items-center gap-2 text-[#443442]">
-          <button
-            aria-label="Search"
-            className="hidden rounded-full p-2.5 transition hover:bg-[#f7e8ed] hover:text-[#b91c4a] sm:block"
-          >
-            <FiSearch size={19} />
-          </button>
           <Link
             href="/login"
             aria-label="Account"

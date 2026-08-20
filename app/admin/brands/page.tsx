@@ -6,6 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FiEdit2, FiPlus, FiTag, FiTrash2 } from "react-icons/fi";
 import { deleteBrand, getBrands } from "@/api/brand.api";
 import { useToast } from "@/components/common/toast/toast-provider";
+import DataTable, { DataTableColumn } from "@/components/admin/data-table";
+import { Brand } from "@/types/brand.types";
 
 export default function BrandsPage() {
   const { toast } = useToast();
@@ -27,6 +29,11 @@ export default function BrandsPage() {
   const handleDelete = (id: string, name: string) => {
     if (window.confirm(`Delete ${name}?`)) remove.mutate(id);
   };
+  const columns: DataTableColumn<Brand>[] = [
+    { key: "brand", header: "Brand", render: (brand) => <div className="flex min-w-52 items-center gap-4"><div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f7e8ed] text-[#b91c4a]">{brand.logo ? <Image src={brand.logo} alt="" width={48} height={48} unoptimized className="h-full w-full object-contain" /> : <FiTag size={20} />}</div><span className="font-bold">{brand.name}</span></div> },
+    { key: "description", header: "Description", render: (brand) => <span className="block max-w-md truncate text-sm text-[#756875]">{brand.description || "No description"}</span> },
+    { key: "actions", header: "Actions", className: "text-right", render: (brand) => <div className="flex justify-end gap-2"><Link href={`/admin/brands/${brand._id}/edit`} className="flex items-center gap-2 rounded-lg border border-[#eadfe2] px-3 py-2 text-sm font-bold text-[#756875] hover:border-[#b91c4a] hover:text-[#b91c4a]"><FiEdit2 size={15} />Edit</Link><button onClick={() => handleDelete(brand._id, brand.name)} disabled={remove.isPending} className="rounded-lg border border-red-100 p-2.5 text-red-500 hover:bg-red-50 disabled:opacity-50" aria-label={`Delete ${brand.name}`}><FiTrash2 size={15} /></button></div> },
+  ];
 
   return (
     <div className="space-y-8">
@@ -75,54 +82,7 @@ export default function BrandsPage() {
             </Link>
           </div>
         ) : (
-          <div className="divide-y divide-[#f3ece9]">
-            {brands.map((brand) => (
-              <div
-                key={brand._id}
-                className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="flex min-w-0 items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f7e8ed] text-[#b91c4a]">
-                    {brand.logo ? (
-                      <Image
-                        src={brand.logo}
-                        alt=""
-                        width={48}
-                        height={48}
-                        unoptimized
-                        className="h-full w-full object-contain"
-                      />
-                    ) : (
-                      <FiTag size={20} />
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-bold">{brand.name}</p>
-                    <p className="truncate text-sm text-[#756875]">
-                      {brand.description || "No description"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 sm:pl-4">
-                  <Link
-                    href={`/admin/brands/${brand._id}/edit`}
-                    className="flex items-center gap-2 rounded-lg border border-[#eadfe2] px-3 py-2 text-sm font-bold text-[#756875] hover:border-[#b91c4a] hover:text-[#b91c4a]"
-                  >
-                    <FiEdit2 size={15} />
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(brand._id, brand.name)}
-                    disabled={remove.isPending}
-                    className="rounded-lg border border-red-100 p-2.5 text-red-500 hover:bg-red-50 disabled:opacity-50"
-                    aria-label={`Delete ${brand.name}`}
-                  >
-                    <FiTrash2 size={15} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <DataTable rows={brands} columns={columns} getRowKey={(brand) => brand._id} />
         )}
       </section>
     </div>
